@@ -4,6 +4,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const { json } = require("express");
+const { stringify } = require("querystring");
 
 // Sets up the Express App
 // =============================================================
@@ -17,8 +18,9 @@ const public = path.resolve(__dirname, "public");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Additional setup to allow Express to access the assets folder
+// Additional setup to allow Express to access the assets and db folders
 app.use("/assets", express.static(__dirname + "/assets"));
+app.use("/db", express.static(__dirname + "/db"));
 
 // Initialise the Notes Array
 var notesArray = [];
@@ -37,11 +39,10 @@ app.get("/api/notes", function(request, response) {
 app.post("/api/notes", function(request, response) {
     var newNote = request.body;
     notesArray.push(newNote);
-    console.log((notesArray));
+    notesArray = JSON.stringify(notesArray);
+    fs.writeFileSync("./db/db.json", notesArray);
     response.end();
 });
-
-
 
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function(request, response) {
@@ -58,7 +59,6 @@ app.get("/notes", function(request, response) {
 app.get("*", function(req, response) {
     response.sendFile(path.join(__dirname, "index.html"))
 });
-
 
 // Starts the server to begin listening
 // =============================================================
