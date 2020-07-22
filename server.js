@@ -9,6 +9,9 @@ const fs = require("fs");
 const app = express();
 var PORT = process.env.PORT || 3000;
 
+// Set up the file directory
+const public = path.resolve(__dirname, "public");
+
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -16,25 +19,25 @@ app.use(express.json());
 // Routes
 // =============================================================
 
+// API Route to return the notes in json format
+app.get("/api/notes", function(request, response) {
+    let data = JSON.parse(fs.readFileSync("./db/db.json"));
+    return response.json(data);
+});
+
+
 // Basic route that sends the user first to the AJAX Page
 
-app.get("/", function(request, response) {
-    response.sendFile(path.join(__dirname, "index.html"));
+app.get("*", function(request, response) {
+    response.sendFile(path.join(public, "index.html"));
 });
 
 // Route to notes page  
 app.get("/notes", function(request, response) {
-    response.sendFile(path.join(__dirname, "notes.html"));
+    response.sendFile(path.join(public, "notes.html"));
 });
 
-// API Route to return the notes in json format
-app.get("/api/notes", function(request, response) {
-    console.log("Notes");
-    let data = JSON.parse(fs.readFileSync('../db/db.json'));
-    //console.log(data);
-    //response.sendFile(path.join(__dirname, '/db/', 'db.json')); //displays the notes in a file format
-    return response.json(data);
-});
+
 
 // Starts the server to begin listening
 // =============================================================
