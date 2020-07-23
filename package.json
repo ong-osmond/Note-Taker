@@ -1,9 +1,10 @@
 {
     "name": "note-taker",
     "version": "1.0.0",
-    "description": "",
+    "description": "Note Taker App using Express.js for routing.",
     "main": "server.js",
     "scripts": {
+        "start": "node server.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon server.js",
         "watch": "nodemon server.js"
