@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 // Dependencies
 // =============================================================
 const express = require("express");
@@ -46,7 +48,7 @@ app.post("/api/notes", function(request, response) {
     let newNote = request.body;
     //Add an id to the note
     if (typeof notesArray !== 'undefined' && notesArray.length > 0) {
-        let lastNoteId = notesArray[notesArray.length - 1].id
+        let lastNoteId = notesArray[notesArray.length - 1].id;
         newNote.id = lastNoteId + 1;
     } else {
         newNote.id = 1;
@@ -82,7 +84,7 @@ app.get("/notes", function(request, response) {
 
 // Route to home page if user does not enter an endpoint
 app.get("*", function(request, response) {
-    response.sendFile(path.join(__dirname, "index.html"))
+    response.redirect('/');
 });
 
 // Starts the server to begin listening
